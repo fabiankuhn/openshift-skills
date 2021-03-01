@@ -1,0 +1,13 @@
+rootProject.name = 'openshift-testapp'
+
+include 'backend'
+
+// Include Application
+include 'backend:app'
+
+// Common
+include 'backend:common'
+
+// Modules
+include 'backend:modules:customer'
+include 'backend:modules:consultation'

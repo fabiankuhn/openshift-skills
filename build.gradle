@@ -1,0 +1,37 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.3.4.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'java'
+}
+
+allprojects {
+	group = 'ch.shkb.guidedcounselling'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '11'
+}
+
+subprojects {
+
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'java-library'
+	apply plugin: 'java'
+
+	repositories {
+		mavenCentral()
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}
+
+repositories {
+	mavenCentral()
+}

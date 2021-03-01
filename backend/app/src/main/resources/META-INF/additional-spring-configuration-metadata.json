@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "api-prefix",
+      "type": "java.lang.String",
+      "description": "Prefix used for all Controllers."
+  }
+] }
