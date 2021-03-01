@@ -1,7 +1,20 @@
+#!/usr/bin/env groovy
+
 pipeline {
     agent any
 
     stages {
+        stage('preamble') {
+            steps {
+                script {
+                    openshift.withCluster() {
+                        openshift.withProject() {
+                            echo "Using project: ${openshift.project()}"
+                        }
+                    }
+                }
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building..'
