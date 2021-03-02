@@ -27,19 +27,14 @@ pipeline {
             }
         }
 
-//        stage('test'){
-//            steps {
-//                withGradle {
-//                    sh './gradlew clean check'
-//                }
-//            }
-//        }
-
-        stage('Test') {
+        stage('test'){
             steps {
-                sh './gradlew test'
+                withGradle {
+                    sh './gradlew clean check'
+                }
             }
         }
+
 
         // TODO: make github private
         // TODO: build specific branch
