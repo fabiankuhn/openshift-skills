@@ -16,13 +16,13 @@ pipeline {
             }
         }
         stage('build') {
-            steps{
-                script{
+            steps {
+                script {
                     openshift.withCluster() {
                         openshift.withProject() {
                             echo "Using project: ${openshift.project()}"
                             def buildConfig = openshift.selector("bc", "openshift-testapp")
-                            openshift.startBuild("front-end-build") // we started the build process
+                            openshift.startBuild("openshift-testapp") // we started the build process
                             def builds = buildConfig.related('builds')
                             builds.describe()
                             timeout(5) {
@@ -35,7 +35,6 @@ pipeline {
                         }
                     }
                 }
-
             }
 
         }
