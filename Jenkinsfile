@@ -14,6 +14,7 @@
 // https://www.jenkins.io/doc/tutorials/build-a-java-app-with-maven/
 
 // Binary Builds (!!!)
+// https://medium.com/@Kaza/how-to-build-from-docker-on-openshift-9638583f880a
 // https://docs.openshift.com/container-platform/3.6/dev_guide/dev_tutorials/binary_builds.html
 
 
