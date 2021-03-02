@@ -61,6 +61,8 @@ pipeline {
             }
             steps {
 
+                // TODO document: Follow steps of openshift docu: https://docs.openshift.com/container-platform/3.6/dev_guide/dev_tutorials/binary_builds.html
+
                 // TODO document how to create image stream and build config: oc new-build --strategy docker --binary --docker-image openjdk:11-slim --name java-backend
 
                 sh "./gradlew clean assemble" //--no-deamon? clean?
