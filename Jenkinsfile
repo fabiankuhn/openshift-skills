@@ -51,10 +51,7 @@ pipeline {
         }
 
 
-        // TODO: make github private
-        // TODO: build specific branch
         // TODO: deploy specific artefact/tag
-        // TODO remove deploy step
         stage('build') {
             tools {
                 jdk "jdk-11.0.1"
@@ -66,7 +63,7 @@ pipeline {
 
                 // TODO document how to create image stream and build config: oc new-build --strategy docker --binary --docker-image openjdk:11-slim --name java-backend
 
-                sh "./gradlew clean assemble" // TODO --no-deamon? clean?
+                sh "./gradlew clean assemble" //--no-deamon? clean?
 
                 script {
                     openshift.withCluster() {
@@ -86,7 +83,7 @@ pipeline {
                 script {
                     openshift.withCluster() {
 
-                        def buildConfig = openshift.selector("bc", "python-backend")
+                        def buildConfig = openshift.selector("bc", "python-app")
                         buildConfig.startBuild("--from-dir python", "--wait")
                         def builds = buildConfig.related('builds')
                         builds.describe()
