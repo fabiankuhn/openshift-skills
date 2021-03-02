@@ -26,7 +26,7 @@ pipeline {
 
           openshift.withCluster() {
 
-            openshift.newApp('redhat-openjdk18-openshift:1.1~https://github.com/fabiankuhn/openshift-testapp.git')
+            openshift.newApp('openshift-testapp:latest~https://github.com/fabiankuhn/openshift-testapp.git')
 
           }
 
