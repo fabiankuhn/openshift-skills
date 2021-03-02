@@ -80,6 +80,22 @@ pipeline {
             }
         }
 
+        stage('build python app') {
+            steps {
+
+                script {
+                    openshift.withCluster() {
+
+                        def buildConfig = openshift.selector("bc", "python-backend")
+                        buildConfig.startBuild("--from-dir python", "--wait")
+                        def builds = buildConfig.related('builds')
+                        builds.describe()
+                    }
+                }
+            }
+        }
+
+
         stage('Deploy') {
 
             // TODO do not deploy if fails

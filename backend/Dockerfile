@@ -11,4 +11,4 @@ ENTRYPOINT ["java","-jar","/app.jar"]
 
 # cd backend
 # docker build -t fabiankuhn/openshift-testapp-backend .
-# docker run -p 8180:8180 -d --name openshift-testapp fabiankuhn/openshift-testapp-backend
+# docker run -p 8080:8080 -d --name openshift-testapp fabiankuhn/openshift-testapp-backend
