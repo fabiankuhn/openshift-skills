@@ -27,13 +27,13 @@ pipeline {
             }
         }
 
-        stage('test'){
-            steps {
-                withGradle {
-                    sh './gradlew clean check'
-                }
-            }
-        }
+//        stage('test'){
+//            steps {
+//                withGradle {
+//                    sh './gradlew clean check'
+//                }
+//            }
+//        }
 
 
         // TODO: make github private
