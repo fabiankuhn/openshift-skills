@@ -35,6 +35,12 @@ pipeline {
 //            }
 //        }
 
+        stage('Test') {
+            steps {
+                sh './gradlew test'
+            }
+        }
+
         // TODO: make github private
         // TODO: build specific branch
 
