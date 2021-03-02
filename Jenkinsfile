@@ -33,24 +33,22 @@ pipeline {
             }
         }
 
-//        stage('test') {
-//            tools {
-//                jdk "jdk-11.0.1" // Tool defined in Jenkins -> Manage Jenkins -> Global Tool Config -> JDK (see docs)
-//            }
-//            agent {
-//                label 'maven' // Starts automatically
-//            }
-//            steps {
-//                sh "./gradlew --no-daemon build" // TODO make tests only. build step before
-//
-//                stash name: 'backend-build', includes: 'backend/app/build/**/*'
-//            }
-//            post {
-//                always {
-//                    junit '**/test-results/test/*.xml'
-//                }
-//            }
-//        }
+        stage('test') {
+            tools {
+                jdk "jdk-11.0.1" // Tool defined in Jenkins -> Manage Jenkins -> Global Tool Config -> JDK (see docs)
+            }
+            agent {
+                label 'maven' // Starts automatically
+            }
+            steps {
+                sh "./gradlew --no-daemon clean check"
+            }
+            post {
+                always {
+                    junit '**/test-results/test/*.xml'
+                }
+            }
+        }
 
 
         // TODO: make github private
@@ -58,38 +56,25 @@ pipeline {
         // TODO: deploy specific artefact/tag
         // TODO remove deploy step
         stage('build') {
+            tools {
+                jdk "jdk-11.0.1"
+            }
+            agent {
+                label 'maven' // Starts automatically
+            }
             steps {
 
-                dir('unstash') {
-                    unstash 'backend-build'
-                }
+                // TODO document how to create image stream and build config: oc new-build --strategy docker --binary --docker-image openjdk:11-slim --name java-backend
 
-                sh "ls -la unstash/backend/app/build/libs"
-
-                // File is called 'app-0.0.1-SNAPSHOT.jar'
-
+                sh "./gradlew clean assemble" // TODO --no-deamon? clean?
 
                 script {
                     openshift.withCluster() {
-
-
-                        // sh "ls -la"
-                        // sh "cd python && ls -la && cd .."
-
 
                         def buildConfig = openshift.selector("bc", "java-backend")
                         buildConfig.startBuild("--from-dir backend", "--wait")
                         def builds = buildConfig.related('builds')
                         builds.describe()
-
-
-                        // def buildConfig = openshift.selector("bc", "openshift-testapp")
-                        // buildConfig.startBuild("--from-file python/Dockerfile") // TODO wait for it to finish
-                        // def builds = buildConfig.related('builds')
-                        // builds.describe()
-
-
-                        // TODO dockerfile: run build in docker container...
                     }
                 }
             }
