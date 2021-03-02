@@ -76,16 +76,15 @@ metadata:
 kind: BuildConfig
 apiVersion: v1
 metadata:
-  name: openshift-testapp
+  name: simple-webapp-docker
 spec:
   runPolicy: Serial
   source:
     git:
-      uri: https://github.com/fabiankuhn/openshift-testapp
+      uri: https://github.com/mmumshad/simple-webapp-docker
   strategy:
     type: Docker
     dockerStrategy:
-		dockerfilePath: python
   output:
     to:
       kind: ImageStreamTag
