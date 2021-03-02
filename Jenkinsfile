@@ -1,5 +1,17 @@
 #!groovy
 
+// Inspiration
+// https://access.redhat.com/solutions/4677131
+// https://www.openshift.com/blog/building-declarative-pipelines-openshift-dsl-plugin
+// https://stackoverflow.com/questions/52195748/build-an-image-from-dockerfile-using-pipeline-with-openshift-jenkins-client-plug
+// https://developers.redhat.com/blog/2017/11/20/building-declarative-pipelines-openshift-dsl-plugin/
+
+
+// Testing
+// https://andywis.github.io/tech_blog/openshift-ci-part2.html
+
+
+
 pipeline {
     agent any
 
@@ -15,38 +27,49 @@ pipeline {
                 }
             }
         }
+
+//        stage('test'){
+//            steps {
+//
+//            }
+//        }
+
+        // TODO: make github private
+        // TODO: build specific branch
+
+        // TODO: deploy specific artefact/tag
+
+        // TODO remove deploy step
         stage('build') {
             steps {
                 script {
                     openshift.withCluster() {
-                        openshift.withProject() {
-                            echo "Using project: ${openshift.project()}"
-                            def buildConfig = openshift.selector("bc", "openshift-testapp")
-                            openshift.startBuild("openshift-testapp") // we started the build process
-                            def builds = buildConfig.related('builds')
-                            builds.describe()
-                            timeout(5) {
-                                builds.untilEach(1) {
-                                    it.describe()
-                                    echo "Inside loop: ${it}"
-                                    return (it.object().status.phase == "Complete")
-                                }
-                            }
-                        }
+
+
+                        def buildConfig = openshift.selector("bc", "openshift-testapp")
+                        buildConfig.startBuild("--wait")
+                        def builds = buildConfig.related('builds')
+                        builds.describe()
+
+
+                        // TODO dockerfile: run build in docker container...
                     }
                 }
             }
+        }
 
+    }
+    stage('Test') {
+        steps {
+            echo 'Testing..'
         }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
+    }
+    stage('Deploy') {
+
+        // TODO do not deploy if fails
+
+        steps {
+            echo 'Deploying....'
         }
     }
 }

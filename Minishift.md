@@ -71,7 +71,7 @@ metadata:
   name: simple-webapp-docker
 ```
 
-### Create Build from Docker
+### Create Build from Docker (OLD)
 ```yaml
 kind: BuildConfig
 apiVersion: v1
@@ -90,6 +90,27 @@ spec:
       kind: ImageStreamTag
       name: simple-webapp-docker:latest
   ```
+
+## Build config for singlerepo with subfolders
+````yaml
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: openshift-testapp
+spec:
+  runPolicy: Serial
+  source:
+    git:
+      uri: https://github.com/fabiankuhn/openshift-testapp
+      ref: feature/nodejs
+  strategy:
+    type: Docker
+    dockerStrategy:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: openshift-testapp:latest
+````
 
 ### Add Deployment Config
 ```yaml
