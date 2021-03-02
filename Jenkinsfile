@@ -11,7 +11,6 @@
 // https://andywis.github.io/tech_blog/openshift-ci-part2.html
 
 
-
 pipeline {
     agent any
 
@@ -30,7 +29,9 @@ pipeline {
 
 //        stage('test'){
 //            steps {
-//
+//                withGradle {
+//                    sh './gradlew clean check'
+//                }
 //            }
 //        }
 
@@ -51,25 +52,31 @@ pipeline {
                         def builds = buildConfig.related('builds')
                         builds.describe()
 
+                        sh "ls -la"
+
+//                        def buildConfig = openshift.selector("bc", "openshift-testapp")
+//                        buildConfig.startBuild("--from-dir python", "--wait")
+//                        def builds = buildConfig.related('builds')
+//                        builds.describe()
+
 
                         // TODO dockerfile: run build in docker container...
                     }
                 }
             }
         }
-
-    }
-    stage('Test') {
-        steps {
-            echo 'Testing..'
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
         }
-    }
-    stage('Deploy') {
+        stage('Deploy') {
 
-        // TODO do not deploy if fails
+            // TODO do not deploy if fails
 
-        steps {
-            echo 'Deploying....'
+            steps {
+                echo 'Deploying....'
+            }
         }
     }
 }
