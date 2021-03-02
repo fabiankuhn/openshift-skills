@@ -10,6 +10,9 @@
 // Testing
 // https://andywis.github.io/tech_blog/openshift-ci-part2.html
 
+// Official Jenkins Doc
+// https://www.jenkins.io/doc/tutorials/build-a-java-app-with-maven/
+
 
 pipeline {
     agent any
@@ -27,25 +30,48 @@ pipeline {
             }
         }
 
-//        stage('test'){
-//            steps {
-//                withGradle {
-//                    sh './gradlew clean check'
-//                }
-//            }
-//        }
+        stage('test') {
+            tools {
+                jdk "jdk-11.0.1" // Tool defined in Jenkins -> Manage Jenkins -> Global Tool Config -> JDK (see docs)
+            }
+            agent {
+                label 'maven' // Starts automatically
+            }
+            steps {
+                sh "./gradlew --no-daemon build" // TODO make tests only. build step before
+
+                stash name: 'backend-build', includes: 'backend/app/build/**/*'
+            }
+            post {
+                always {
+                    junit '**/test-results/test/*.xml'
+                }
+            }
+        }
 
 
         // TODO: make github private
         // TODO: build specific branch
-
         // TODO: deploy specific artefact/tag
-
         // TODO remove deploy step
         stage('build') {
             steps {
+
+                dir('unstash') {
+                    unstash 'backend-build'
+                }
+
+                sh "ls -la unstash/backend/app/build/libs"
+
+                // File is called 'app-0.0.1-SNAPSHOT.jar'
+
+
                 script {
                     openshift.withCluster() {
+
+
+                        // sh "ls -la"
+                        // sh "cd python && ls -la && cd .."
 
 
                         def buildConfig = openshift.selector("bc", "openshift-testapp")
@@ -53,12 +79,11 @@ pipeline {
                         def builds = buildConfig.related('builds')
                         builds.describe()
 
-                        sh "ls -la"
 
-//                        def buildConfig = openshift.selector("bc", "openshift-testapp")
-//                        buildConfig.startBuild("--from-dir python", "--wait")
-//                        def builds = buildConfig.related('builds')
-//                        builds.describe()
+                        // def buildConfig = openshift.selector("bc", "openshift-testapp")
+                        // buildConfig.startBuild("--from-file python/Dockerfile") // TODO wait for it to finish
+                        // def builds = buildConfig.related('builds')
+                        // builds.describe()
 
 
                         // TODO dockerfile: run build in docker container...
