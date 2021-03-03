@@ -1,5 +1,5 @@
-# Minishift
-This documentation shows, how a simple java application can be deployed to openshift via jenkins pipeline.
+# Openshift Skills
+This documentation shows, how a simple java application can be deployed to openshift (minishift) via jenkins pipeline.
 
 More Info
 - Openshift Configs: [Openshift-Config.md](_docs/Openshift-Config.md)
