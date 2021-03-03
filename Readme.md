@@ -1,6 +1,10 @@
 # Minishift
 This documentation shows, how a simple java application can be deployed to openshift via jenkins pipeline.
 
+More Info
+- Openshift Configs: [Openshift-Config.md](_docs/Openshift-Config.md)
+- Jenkins Handling: [Jenkins-Config-Handling-md](_docs/Jenkins-Config-Handling.md)
+
 ## Installation
 1. Setup Mac Virutalization: [https://docs.okd.io/3.11/minishift/getting-started/setting-up-virtualization-environment.html#setting-up-hyperkit-driver](https://docs.okd.io/3.11/minishift/getting-started/setting-up-virtualization-environment.html#setting-up-hyperkit-driver)
 2. Install Minishift: brew cask install minishift
@@ -171,3 +175,9 @@ Check if build works
 - `$ oc get route myapp`
 
 If deployment was successful, try out the pipeline build (which works identical). If necessary optimize the build and deploy configs.
+
+## Result
+![Demo-1](_docs/Screenshot_demo-1.png)
+![Demo-2](_docs/Screenshot_demo-2.png)
+![Demo-3](_docs/Screenshot_demo-3.png)
+![Demo-4](_docs/Screenshot_demo-4.png)
