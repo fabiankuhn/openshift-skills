@@ -2,7 +2,7 @@
 This documentation shows, how a simple java application can be deployed to openshift via jenkins pipeline.
 
 ## Installation
-1. Setup Mac Virutalization: [https://docs.okd.io/3.11/minishift/getting-started/setting-up-virtualization-environment.html#setting-up-hyperkit-driver(https://docs.okd.io/3.11/minishift/getting-started/setting-up-virtualization-environment.html#setting-up-hyperkit-driver)
+1. Setup Mac Virutalization: [https://docs.okd.io/3.11/minishift/getting-started/setting-up-virtualization-environment.html#setting-up-hyperkit-driver](https://docs.okd.io/3.11/minishift/getting-started/setting-up-virtualization-environment.html#setting-up-hyperkit-driver)
 2. Install Minishift: brew cask install minishift
 3. Set rights
 	- `$ sudo chmod u+s /usr/local/bin/hyperkit`
@@ -22,9 +22,9 @@ Trouble Resolve:
 
 ```groovy
 pipeline {
-    agent any
+  agent any
 
-    stages {
+  stages {
     stage('test') {
       tools {
         jdk "jdk-11.0.1" // Tool defined in Jenkins -> Manage Jenkins -> Global Tool Config -> JDK (see docs)
@@ -42,7 +42,7 @@ pipeline {
       }
     }
     stage('build') {
-      
+
       tools {
         jdk "jdk-11.0.1"
       }
@@ -50,7 +50,7 @@ pipeline {
         label 'maven'
       }
       steps {
-        
+
         sh "./gradlew clean assemble" // Generate jar
 
         script {
