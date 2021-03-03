@@ -56,7 +56,7 @@ pipeline {
         script {
           openshift.withCluster() {
 
-            def buildConfig = openshift.selector("bc", "java-backend")
+            def buildConfig = openshift.selector("bc", "java-backend") // The java-backend build script will be automatically created in the last step
             buildConfig.startBuild("--from-dir backend", "--wait")
             def builds = buildConfig.related('builds')
             builds.describe()
