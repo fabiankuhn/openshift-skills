@@ -1,17 +1,17 @@
 #!groovy
 
+// Important: Binary Builds (!!!)
+// https://medium.com/@Kaza/how-to-build-from-docker-on-openshift-9638583f880a
+// https://docs.openshift.com/container-platform/3.6/dev_guide/dev_tutorials/binary_builds.html
+
 // Inspiration
 // https://access.redhat.com/solutions/4677131
 // https://www.openshift.com/blog/building-declarative-pipelines-openshift-dsl-plugin
 // https://stackoverflow.com/questions/52195748/build-an-image-from-dockerfile-using-pipeline-with-openshift-jenkins-client-plug
 // https://developers.redhat.com/blog/2017/11/20/building-declarative-pipelines-openshift-dsl-plugin/
 
-
 // Testing
 // https://andywis.github.io/tech_blog/openshift-ci-part2.html
-
-// Official Jenkins Doc
-// https://www.jenkins.io/doc/tutorials/build-a-java-app-with-maven/
 
 
 pipeline {
@@ -38,9 +38,7 @@ pipeline {
                 label 'maven' // Starts automatically
             }
             steps {
-                sh "./gradlew --no-daemon build" // TODO make tests only. build step before
-
-                stash name: 'backend-build', includes: 'backend/app/build/**/*'
+                sh "./gradlew --no-daemon clean check"
             }
             post {
                 always {
@@ -50,45 +48,53 @@ pipeline {
         }
 
 
-        // TODO: make github private
-        // TODO: build specific branch
         // TODO: deploy specific artefact/tag
-        // TODO remove deploy step
         stage('build') {
-            steps {
 
-                dir('unstash') {
-                    unstash 'backend-build'
-                }
+            parallel {
 
-                sh "ls -la unstash/backend/app/build/libs"
+                stage("build backend"){
+                    tools {
+                        jdk "jdk-11.0.1"
+                    }
+                    agent {
+                        label 'maven' // Starts automatically
+                    }
+                    steps {
 
-                // File is called 'app-0.0.1-SNAPSHOT.jar'
+                        // TODO document: Follow steps of openshift docu: https://docs.openshift.com/container-platform/3.6/dev_guide/dev_tutorials/binary_builds.html
 
+                        // TODO document how to create image stream and build config: oc new-build --strategy docker --binary --docker-image openjdk:11-slim --name java-backend
 
-                script {
-                    openshift.withCluster() {
+                        sh "./gradlew clean assemble" //--no-deamon? clean?
 
+                        script {
+                            openshift.withCluster() {
 
-                        // sh "ls -la"
-                        // sh "cd python && ls -la && cd .."
-
-
-                        def buildConfig = openshift.selector("bc", "openshift-testapp")
-                        buildConfig.startBuild("--wait")
-                        def builds = buildConfig.related('builds')
-                        builds.describe()
-
-
-                        // def buildConfig = openshift.selector("bc", "openshift-testapp")
-                        // buildConfig.startBuild("--from-file python/Dockerfile") // TODO wait for it to finish
-                        // def builds = buildConfig.related('builds')
-                        // builds.describe()
-
-
-                        // TODO dockerfile: run build in docker container...
+                                def buildConfig = openshift.selector("bc", "java-backend")
+                                buildConfig.startBuild("--from-dir backend", "--wait")
+                                def builds = buildConfig.related('builds')
+                                builds.describe()
+                            }
+                        }
                     }
                 }
+
+                stage("build python"){
+                    steps {
+
+                        script {
+                            openshift.withCluster() {
+
+                                def buildConfig = openshift.selector("bc", "python-app")
+                                buildConfig.startBuild("--from-dir python", "--wait")
+                                def builds = buildConfig.related('builds')
+                                builds.describe()
+                            }
+                        }
+                    }
+                }
+
             }
         }
 
