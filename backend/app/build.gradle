@@ -1,3 +1,7 @@
+plugins {
+    id 'com.google.cloud.tools.jib' version '2.6.0'
+}
+
 dependencies {
     // Import Modules
     api project(":backend:modules:customer")
@@ -14,6 +18,8 @@ dependencies {
     // Open API Definition
     implementation("org.springdoc:springdoc-openapi-ui:1.4.8")
 
+    // Jib
+
     // Testing
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -23,3 +29,24 @@ dependencies {
 bootJar {
     enabled = true
 }
+
+// Build locally: Build Image `$ ./gradlew jibDockerBuild`
+// https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin#build-to-docker-daemon
+
+// Deploy locally
+// docker run -p 8080:8080 -d --name mini-java fabiankuhn/java-backend-jib
+
+jib {
+    from {
+        image = 'gcr.io/distroless/java:11'
+    }
+    to {
+        image = 'docker-registry.default.svc:5000/testapp/java-backend-jib' // :port/project/name
+        // tags = ['latest', project.ext.versionDocker] // TODO
+    }
+    container {
+        ports = ['8080']
+        creationTime = "USE_CURRENT_TIMESTAMP"
+    }
+}
+

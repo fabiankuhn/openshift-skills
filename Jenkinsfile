@@ -1,4 +1,4 @@
-#!groovy
+// #!groovy
 
 // Important: Binary Builds (!!!)
 // https://medium.com/@Kaza/how-to-build-from-docker-on-openshift-9638583f880a
@@ -45,11 +45,15 @@ pipeline {
                     junit '**/test-results/test/*.xml'
                 }
             }
+
+            // TODO stash build files
         }
 
         stage('build') {
 
             parallel {
+
+                // TODO unstash
 
                 stage("build backend"){
                     tools {
@@ -88,7 +92,24 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
 
+        stage('publish backen jib') {
+            tools {
+                jdk "jdk-11.0.1"
+            }
+            agent {
+                label 'maven'
+            }
+            steps {
+                withCredentials(){
+                // withCredentials([usernamePassword(credentialsId: 'service-account-builder', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                    sh "./gradlew --no-daemon " +
+                            // "-Djib.to.auth.username=$USERNAME -Djib.to.auth.password=$PASSWORD " +
+                            "-Djib.console=plain " +
+                            "jib"
+                }
             }
         }
 

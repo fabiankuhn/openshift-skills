@@ -1,6 +1,31 @@
 # Openshift Configs
 These configs are used to create a app from a docker Repo
 
+## Actual java-backend build
+````groovy
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: java-backend-test
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'java-backend:latest'
+  source:
+    binary: {}
+    type: Binary
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'openjdk:11-slim'
+    type: Docker
+  successfulBuildsHistoryLimit: 5
+````
+
+## Simple Docker Deployment (from udemy tutorial)
+
 ### Create ImageStream
 ```yaml
 apiVersion: image.openshift.io/v1

@@ -10,6 +10,7 @@ plugins {
 	id 'java'
 }
 
+
 allprojects {
 	group = 'ch.shkb.guidedcounselling'
 	version = '0.0.1-SNAPSHOT'
