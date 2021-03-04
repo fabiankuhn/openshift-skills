@@ -53,5 +53,5 @@ jib {
         creationTime = "USE_CURRENT_TIMESTAMP"
     }
     allowInsecureRegistries = true
-    sendCredentialsOverHttp = true
+    sendCredentialsOverHttp = true // TODO disable for prod
 }
