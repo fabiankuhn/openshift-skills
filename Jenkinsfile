@@ -110,7 +110,7 @@ pipeline {
                             sh "./gradlew --no-daemon " +
                                     // "-Djib.to.auth.username=$USERNAME -Djib.to.auth.password=$PASSWORD " +
                                     "-Djib.console=plain " +
-                                    "jib"
+                                    ":backend:app:jib"
                         }
                     }
                 }
