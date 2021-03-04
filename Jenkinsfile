@@ -119,8 +119,9 @@ pipeline {
 //            }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'service-account-builder', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+
                     sh "./gradlew --no-daemon -Djib.console=plain" +
-                            "-Djib.to.auth.username=$USERNAME -Djib.to.auth.password=$PASSWORD " +
+                            // "-Djib.to.auth.username=developer -Djib.to.auth.password=developer " +
                             "-Djib.console=plain " +
                             ":backend:app:jib"
                 }

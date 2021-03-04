@@ -43,6 +43,10 @@ jib {
     to {
         image = 'docker-registry.default.svc:5000/testapp/java-backend-jib' // define image stream/ :port/project/name
         // tags = ['latest', project.ext.versionDocker] // TODO
+        auth {
+            username = "developer"
+            password = "developer"
+        }
     }
     container {
         ports = ['8080']
