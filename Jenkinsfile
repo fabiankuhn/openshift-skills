@@ -47,8 +47,6 @@ pipeline {
             }
         }
 
-
-        // TODO: deploy specific artefact/tag
         stage('build') {
 
             parallel {
@@ -61,10 +59,6 @@ pipeline {
                         label 'maven' // Starts automatically
                     }
                     steps {
-
-                        // TODO document: Follow steps of openshift docu: https://docs.openshift.com/container-platform/3.6/dev_guide/dev_tutorials/binary_builds.html
-
-                        // TODO document how to create image stream and build config: oc new-build --strategy docker --binary --docker-image openjdk:11-slim --name java-backend
 
                         sh "./gradlew clean assemble" //--no-deamon? clean?
 
@@ -101,6 +95,7 @@ pipeline {
         stage('Deploy') {
 
             // TODO do not deploy if fails
+            // TODO: deploy specific artefact/tag
 
             steps {
                 echo 'Deploying....'
