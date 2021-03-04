@@ -121,7 +121,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'service-account-builder', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
 
                     sh "./gradlew --no-daemon -Djib.console=plain" +
-                            "-Djib.to.auth.username=builder -Djib.to.auth.password=builder-token-qdtw8 " +
+                            "-Djib.to.auth.username=builder -Djib.to.auth.password=eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJ0ZXN0YXBwIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImJ1aWxkZXItdG9rZW4tcWR0dzgiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiYnVpbGRlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjdmMDMzN2YzLTdhODMtMTFlYi04NzU3LTA4MDAyNzlhZGIwZiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDp0ZXN0YXBwOmJ1aWxkZXIifQ.EsmJEuEPbUHLb5mzQQMTGscrb5IYm8p-pOCdhQGnfkGRiStI-aa5qRpUKAA2YRxFNlxtpcw6M69ImuYBM9fiWy3SOUw71nAxqxJzJGhSeM1Q-odkEd7QuPzoWinN0etFRk4tjjnZEtZYsd1Mvj9YHLq5JJjNDWvq0miDSTOf_eHKLuAG6kJkRv3BqaC3leE_qX1Hi0WDHL2fqMSEUYF0ocIGExw2t2MPBP-UtLmTrKv9BnTGivhH0Fh0uie_XqrjUhFml0rDV2sq6PVhQW-FfD4yKlMGh83huKI0_PbLrxFCt-NpB1Um4v5-mUgdn8_ATGO1_22t2C2OwPxxQMWNnQ " +
                             "-Djib.console=plain " +
                             ":backend:app:jib"
                 }
