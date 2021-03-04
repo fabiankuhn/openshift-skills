@@ -13,7 +13,9 @@ More Info
 	- `$ sudo chmod u+s,+x /usr/local/bin/docker-machine-driver-hyperkit`
 	- `$ udo chown root:wheel /usr/local/bin/docker-machine-driver-hyperkit && sudo chmod u+s /usr/local/bin/docker-machine-driver-hyperkit`
 4. Disconnect from VPN
-5. Run Minishift: `$ minishift run`
+5. Run Minishift (with Virtualbox): 
+   - First run `$ minishift start --vm-driver=virtualbox` 
+   - Following runs: `$ minishift start`
 
 
 Trouble Resolve:
