@@ -121,8 +121,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'service-account-builder', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
 
                     sh "./gradlew --no-daemon -Djib.console=plain" +
-                            // "-Djib.to.auth.username=developer -Djib.to.auth.password=developer " +
-                            "-DsendCredentialsOverHttp=true" + // TODO remove
+                            "-Djib.to.auth.username=builder -Djib.to.auth.password=builder-token-qdtw8 " +
                             "-Djib.console=plain " +
                             ":backend:app:jib"
                 }
