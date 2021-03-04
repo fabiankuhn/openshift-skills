@@ -41,7 +41,7 @@ jib {
         image = 'gcr.io/distroless/java:11'
     }
     to {
-        image = 'docker-registry.default.svc:5000/testapp/java-backend-jib' // :port/project/name
+        image = 'docker-registry.default.svc:5000/testapp/java-backend-jib' // define image stream/ :port/project/name
         // tags = ['latest', project.ext.versionDocker] // TODO
     }
     container {
