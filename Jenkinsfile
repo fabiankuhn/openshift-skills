@@ -106,11 +106,13 @@ pipeline {
                 script {
                     openshift.withCluster() {
                         openshift.withCredentials() {
+
+                            sh "./gradlew --no-daemon -Djib.console=plain :backend:app:jib"
                             // withCredentials([usernamePassword(credentialsId: 'service-account-builder', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                            sh "./gradlew --no-daemon " +
-                                    // "-Djib.to.auth.username=$USERNAME -Djib.to.auth.password=$PASSWORD " +
-                                    "-Djib.console=plain " +
-                                    ":backend:app:jib"
+//                            sh "./gradlew --no-daemon " +
+//                                    // "-Djib.to.auth.username=$USERNAME -Djib.to.auth.password=$PASSWORD " +
+//                                    "-Djib.console=plain " +
+//                                    ":backend:app:jib"
                         }
                     }
                 }
