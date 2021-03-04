@@ -122,6 +122,7 @@ pipeline {
 
                     sh "./gradlew --no-daemon -Djib.console=plain" +
                             // "-Djib.to.auth.username=developer -Djib.to.auth.password=developer " +
+                            "-DsendCredentialsOverHttp=true" + // TODO remove
                             "-Djib.console=plain " +
                             ":backend:app:jib"
                 }
