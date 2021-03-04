@@ -30,7 +30,7 @@ bootJar {
     enabled = true
 }
 
-// Build locally: Build Image `$ ./gradlew jibDockerBuild`
+// Build locally: Build Image `$ ./gradlew jibDockerBuild` // TODO document
 // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin#build-to-docker-daemon
 
 // Deploy locally
@@ -48,5 +48,6 @@ jib {
         ports = ['8080']
         creationTime = "USE_CURRENT_TIMESTAMP"
     }
+    allowInsecureRegistries = true
 }
 
