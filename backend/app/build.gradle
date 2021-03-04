@@ -29,3 +29,24 @@ dependencies {
 bootJar {
     enabled = true
 }
+
+// Build locally: Build Image `$ ./gradlew jibDockerBuild` // TODO document
+// https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin#build-to-docker-daemon
+
+// Deploy locally
+// docker run -p 8080:8080 -d --name mini-java fabiankuhn/java-backend-jib
+
+jib {
+    from {
+        image = 'gcr.io/distroless/java:11'
+    }
+    to {
+        image = 'docker-registry.default.svc:5000/testapp/java-backend-jib' // define image stream/ :port/project/name
+        // tags = ['latest', project.ext.versionDocker] // TODO
+    }
+    container {
+        ports = ['8080']
+        creationTime = "USE_CURRENT_TIMESTAMP"
+    }
+    allowInsecureRegistries = true
+}
