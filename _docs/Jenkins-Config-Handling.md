@@ -18,12 +18,13 @@ Follow steps to set up multibranch pipeline
 ![Screenshot_Jenkins](Screenshot_Jenkins-5.png)
 
 4. Setup JDK
+Use with Name "JDK 17"
 ![Screenshot_Jenkins_2](Screenshot_Jenkins-2.png)
 
 In the pipeline:
 ```groovy
 tools {
-    jdk "jdk-11.0.1"
+    jdk "JDK 17"
 }
 ```
 
