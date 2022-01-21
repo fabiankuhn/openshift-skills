@@ -152,7 +152,7 @@ public class Controller {
 
 ## Run with Docker locally
 ```dockerfile
-FROM openjdk:11-slim
+FROM openjdk:17-slim
 
 ARG JAR_FILE=build/libs/\*.jar
 
@@ -170,7 +170,7 @@ Check if build works
 
 ## Create Openshift App
 - `$ oc login` with credentials developer & developer
-- `$ oc new-build --strategy docker --binary --docker-image openjdk:11-slim:openjdk:11-slim --name java-backend`
+- `$ oc new-build --strategy docker --binary --docker-image openjdk:17-slim --name java-backend`
 - `$ oc start-build java-backend --from-dir . --follow`
 - `$ oc new-app myapp`
 - `$ oc expose svc/myap`
