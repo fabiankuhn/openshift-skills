@@ -32,7 +32,7 @@ pipeline {
 
          stage('test') {
              tools {
-                 jdk "jdk-11.0.1" // Tool defined in Jenkins -> Manage Jenkins -> Global Tool Config -> JDK (see docs)
+                 jdk "jdk-17" // Tool defined in Jenkins -> Manage Jenkins -> Global Tool Config -> JDK (see docs)
              }
              agent {
                  label 'maven' // Starts automatically
