@@ -19,7 +19,7 @@ objects:
         spec:
           containers:
             - name: "java-backend"
-              image: ghcr.io/fabiankuhn/java-backend:{DOCKER_TAG}
+              image: ghcr.io/fabiankuhn/java-backend:${DOCKER_TAG}
               ports:
                 - containerPort: 8080
                   protocol: "TCP"
