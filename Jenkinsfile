@@ -13,9 +13,9 @@ pipeline {
         stage('artifact id') {
             steps {
                 script {
-                    def artifactId = env.GIT_COMMIT[0..7]
-                    currentBuild.description = "${artifactId}"
-                    echo "${artifactId}"
+                    env.artifact_id = env.GIT_COMMIT[0..7]
+                    currentBuild.description = "${env.artifact_id}"
+                    echo "Artifact Identifier: ${env.artifact_id}"
                 }
             }
         }
@@ -39,7 +39,7 @@ pipeline {
 
         stage('build docker image') {
             steps {
-                sh "oc process -f openshift/build-config.tpl.yaml -p DOCKER_TAG=${artifactId} | oc apply -f -"
+                sh "oc process -f openshift/build-config.tpl.yaml -p DOCKER_TAG=${env.artifact_id} | oc apply -f -"
                 sh "oc start-build java-backend --from-dir=backend --follow --wait"
             }
         }
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 sh "oc apply -f openshift/service-config.yaml"
                 sh "oc apply -f openshift/router-config.yaml"
-                sh "oc process -f openshift/deployment-config.tpl.yaml -p DOCKER_TAG=${artifactId} | oc apply -f -"
+                sh "oc process -f openshift/deployment-config.tpl.yaml -p DOCKER_TAG=${env.artifact_id} | oc apply -f -"
                 sh "oc rollout latest dc/java-backend"
             }
         }
