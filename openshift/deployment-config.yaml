@@ -12,20 +12,11 @@ spec:
     spec:
       containers:
         - name: "java-backend"
-          image: "java-backend:latest"
+          image: "ghcr.io/fabiankuhn/java-backend:latest"
           ports:
             - containerPort: 8080
               protocol: "TCP"
   replicas: 2
-  triggers:
-    - type: "ImageChange"
-      imageChangeParams:
-        automatic: false
-        containerNames:
-          - "java-backend"
-        from:
-          kind: "ImageStreamTag"
-          name: "java-backend:latest"
   strategy:
     type: "Rolling"
   paused: false

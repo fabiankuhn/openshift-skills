@@ -40,6 +40,9 @@ Trouble Resolve:
 - Connect to Github
 - See [Jenkins-Config-Handling-md](_docs/Jenkins-Config-Handling.md)
 
+## Setup Registry
+oc create secret docker-registry docker-hub-secret --docker-server=ghcr.io --docker-username=fabiankuhn --docker-password=<my-password> --docker-email=fabian.kuhn@lemonbyte.ch
+
 ## Run with Docker locally
 - See [Dockerfile](backend/Dockerfile)
 - `$ docker build -t ghcr.io/fabiankuhn/java-backend .`
@@ -47,7 +50,7 @@ Trouble Resolve:
 
 Check if build works
 
-## Create Openshift App
+## Create Openshift Example APp
 - `$ oc login` with credentials developer & developer
 - `$ oc new-build --strategy docker --binary --docker-image openjdk:11-slim:openjdk:11-slim --name java-backend`
 - `$ oc start-build java-backend --from-dir . --follow`
