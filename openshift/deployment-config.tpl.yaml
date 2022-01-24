@@ -10,7 +10,7 @@ objects:
     metadata:
       name: java-backend
       labels:
-        app: java-backend
+        app: My-Awesome-Apps
     spec:
       template:
         metadata:

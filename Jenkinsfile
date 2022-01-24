@@ -13,7 +13,7 @@ pipeline {
         stage('artifact id') {
             steps {
                 script {
-                    def artifactId = ${env.GIT_COMMIT[0..7]}
+                    def artifactId = env.GIT_COMMIT[0..7]
                     currentBuild.description = "${artifactId}"
                     echo "${artifactId}"
                 }
