@@ -9,17 +9,17 @@ pipeline {
         label 'maven'
     }
 
-    stage('artifact id') {
-        steps {
-            script {
-                def artifactId = ${env.GIT_COMMIT[0..7]}
-                currentBuild.description = "${artifactId}"
-                echo "${artifactId}"
+    stages {
+        stage('artifact id') {
+            steps {
+                script {
+                    def artifactId = ${env.GIT_COMMIT[0..7]}
+                    currentBuild.description = "${artifactId}"
+                    echo "${artifactId}"
+                }
             }
         }
-    }
 
-    stages {
         stage('build') {
             steps {
                 sh "./gradlew clean assemble"
