@@ -37,16 +37,16 @@ pipeline {
             }
         }
 
-         stage('test') {
-             steps {
-                 sh "./gradlew --no-daemon test"
-             }
-             post {
-                 always {
-                     junit '**/test-results/test/*.xml'
-                 }
-             }
-         }
+//         stage('test') {
+//             steps {
+//                 sh "./gradlew --no-daemon test"
+//             }
+//             post {
+//                 always {
+//                     junit '**/test-results/test/*.xml'
+//                 }
+//             }
+//         }
 
         stage('build docker image') {
             steps {
@@ -56,13 +56,13 @@ pipeline {
             }
         }
 
-        stage('deploy') {
-            steps {
-                sh "oc apply -f openshift/service-config.yaml"
-                sh "oc apply -f openshift/router-config.yaml"
-                sh "oc apply -f openshift/deployment-config.yaml"
-                sh "oc rollout latest dc/java-backend"
-            }
-        }
+//        stage('deploy') {
+//            steps {
+//                sh "oc apply -f openshift/service-config.yaml"
+//                sh "oc apply -f openshift/router-config.yaml"
+//                sh "oc apply -f openshift/deployment-config.yaml"
+//                sh "oc rollout latest dc/java-backend"
+//            }
+//        }
     }
 }
