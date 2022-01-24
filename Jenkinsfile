@@ -38,6 +38,8 @@ pipeline {
 //         }
 
         stage('build docker image') {
+            // TODO do not send whole backend folder but build folder with dockerfile
+
             steps {
                 sh "oc process -f openshift/build-config.tpl.yaml -p DOCKER_TAG=${env.artifact_id} | oc apply -f -"
                 sh "oc start-build java-backend --from-dir=backend --follow --wait"
@@ -50,6 +52,9 @@ pipeline {
                 sh "oc apply -f openshift/router-config.yaml"
                 sh "oc process -f openshift/deployment-config.tpl.yaml -p DOCKER_TAG=${env.artifact_id} | oc apply -f -"
                 sh "oc rollout latest dc/java-backend"
+                sh "oc rollout status"
+
+                // TODO wait for deployment to finish
             }
         }
     }
