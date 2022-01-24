@@ -1,5 +1,5 @@
 #!groovy
-def artifactId = env.BRANCH_NAME
+def artifactId = env.GIT_COMMIT
 
 pipeline {
     tools {
@@ -48,6 +48,7 @@ pipeline {
                 sh "oc apply -f openshift/router-config.yaml"
                 sh "oc process -f openshift/deployment-config.tpl.yaml -p DOCKER_TAG=${artifactId} | oc apply -f -"
                 sh "oc rollout latest dc/java-backend"
+                currentBuild.description = {artifactId}
             }
         }
     }
