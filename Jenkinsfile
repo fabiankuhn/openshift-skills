@@ -15,100 +15,51 @@
 
 
 pipeline {
-    agent any
+    tools {
+        jdk "JDK 17" // Tool defined in Jenkins -> Manage Jenkins -> Global Tool Config -> JDK (see docs)
+    }
+    agent {
+        label 'maven' // Starts automatically
+    }
 
     stages {
         stage('preamble') {
             steps {
-                script {
-                    openshift.withCluster() {
-                        openshift.withProject() {
-                            echo "Using project: ${openshift.project()}"
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('test') {
-            tools {
-                jdk "JDK 17" // Tool defined in Jenkins -> Manage Jenkins -> Global Tool Config -> JDK (see docs)
-            }
-            agent {
-                label 'maven' // Starts automatically
-            }
-            steps {
-                sh "./gradlew --no-daemon clean check"
-            }
-            post {
-                always {
-                    junit '**/test-results/test/*.xml'
-                }
-            }
-
-            // TODO stash build files
-        }
-
-        stage('does this work?') {
-            steps {
-                sh "oc whoami"
+                echo "Using project:"
+                sh "oc project"
             }
         }
 
         stage('build') {
-
-            parallel {
-
-                // TODO unstash
-
-                stage("build backend") {
-                    tools {
-                        jdk "JDK 17"
-                    }
-                    agent {
-                        label 'maven' // Starts automatically
-                    }
-                    steps {
-
-                        sh "./gradlew clean assemble" //--no-deamon? clean?
-
-                        script {
-                            openshift.withCluster() {
-
-                                def buildConfig = openshift.selector("bc", "java-backend")
-                                buildConfig.startBuild("--from-dir backend", "--wait")
-                                def builds = buildConfig.related('builds')
-                                builds.describe()
-                            }
-                        }
-                    }
-                }
-
-                stage("build python") {
-                    steps {
-
-                        script {
-                            openshift.withCluster() {
-
-                                def buildConfig = openshift.selector("bc", "python-app")
-                                buildConfig.startBuild("--from-dir python", "--wait")
-                                def builds = buildConfig.related('builds')
-                                builds.describe()
-                            }
-                        }
-                    }
-                }
+            steps {
+                sh "./gradlew clean assemble"
             }
         }
 
+         stage('test') {
+             steps {
+                 sh "./gradlew --no-daemon clean check"
+             }
+             post {
+                 always {
+                     junit '**/test-results/test/*.xml'
+                 }
+             }
+         }
 
-        stage('Deploy') {
-
-            // TODO do not deploy if fails
-            // TODO: deploy specific artefact/tag
-
+        stage('build docker image') {
             steps {
-                echo 'Deploying....'
+                sh "oc apply -f openshift/image-stream-config.yaml"
+                sh "oc apply -f openshift/service-config.yaml"
+                sh "oc start-build java-backend --from-dir=backend --follow --wait"
+            }
+        }
+
+        stage('deploy') {
+            steps {
+                sh "oc apply -f openshift/service-config.yaml"
+                sh "oc apply -f openshift/router-config.yaml"
+                sh "oc apply -f openshift/deployment-config.yaml"
             }
         }
     }

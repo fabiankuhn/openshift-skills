@@ -1,0 +1,32 @@
+kind: "DeploymentConfig"
+apiVersion: "v1"
+metadata:
+  name: "java-backend"
+spec:
+  template:
+    metadata:
+      labels:
+        name: "java-backend"
+    spec:
+      containers:
+        - name: "java-backend"
+          image: "java-backend:latest"
+          ports:
+            - containerPort: 8080
+              protocol: "TCP"
+  replicas: 5
+  triggers:
+    - type: "ConfigChange"
+    - type: "ImageChange"
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - "java-backend"
+        from:
+          kind: "ImageStreamTag"
+          name: "java-backend:latest"
+  strategy:
+    type: "Rolling"
+  paused: false
+  revisionHistoryLimit: 2
+  minReadySeconds: 0
