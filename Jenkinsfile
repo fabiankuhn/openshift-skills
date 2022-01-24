@@ -9,6 +9,16 @@ pipeline {
         label 'maven'
     }
 
+    stage('artifact id') {
+        steps {
+            script {
+                def artifactId = ${env.GIT_COMMIT[0..7]}
+                currentBuild.description = "${artifactId}"
+                echo "${artifactId}"
+            }
+        }
+    }
+
     stages {
         stage('build') {
             steps {
@@ -26,15 +36,6 @@ pipeline {
 //                 }
 //             }
 //         }
-
-        stage('build artifact id') {
-            steps {
-                script {
-                    def artifactId = ${GIT_COMMIT[0..7]}
-                    currentBuild.description = "${artifactId}"
-                }
-            }
-        }
 
         stage('build docker image') {
             steps {

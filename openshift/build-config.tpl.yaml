@@ -23,6 +23,6 @@ objects:
         dockerStrategy:
           from:
             kind: ImageStreamTag
-            name: 'openjdk:17-slim'
+            name: openjdk:17-slim
         type: Docker
       successfulBuildsHistoryLimit: 5

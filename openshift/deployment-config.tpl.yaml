@@ -15,18 +15,18 @@ objects:
       template:
         metadata:
           labels:
-            name: "java-backend"
+            name: java-backend
         spec:
           containers:
-            - name: "java-backend"
+            - name: java-backend
               image: ghcr.io/fabiankuhn/java-backend:${DOCKER_TAG}
               ports:
                 - containerPort: 8080
-                  protocol: "TCP"
+                  protocol: TCP
       replicas: 2
       triggers: []
       strategy:
-        type: "Rolling"
+        type: Rolling
       paused: false
       revisionHistoryLimit: 2
       minReadySeconds: 0
