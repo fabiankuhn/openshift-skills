@@ -9,6 +9,8 @@ objects:
     apiVersion: v1
     metadata:
       name: java-backend
+      labels:
+        app: My-Awesome-Apps
     spec:
       output:
         to:

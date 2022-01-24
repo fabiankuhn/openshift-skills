@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Route
 metadata:
   name: java-backend
+  labels:
+    app: My-Awesome-Apps
 spec:
   to:
     kind: Service
