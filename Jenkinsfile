@@ -31,9 +31,9 @@ pipeline {
             steps {
                 script {
                     def artifactId = env.BRANCH_NAME
+                    currentBuild.displayName = "Cool stuff"
+                    currentBuild.description = "${artifactId}"
                 }
-                echo "Artifact Identifier: ${artifactId}"
-                currentBuild.description = "${artifactId}"
             }
         }
 
