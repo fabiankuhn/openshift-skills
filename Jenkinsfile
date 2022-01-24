@@ -48,7 +48,7 @@ pipeline {
                 sh "oc apply -f openshift/router-config.yaml"
                 sh "oc process -f openshift/deployment-config.tpl.yaml -p DOCKER_TAG=${artifactId} | oc apply -f -"
                 sh "oc rollout latest dc/java-backend"
-                currentBuild.description = {artifactId}
+//                currentBuild.description = {artifactId}
             }
         }
     }
