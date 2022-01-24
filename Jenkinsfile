@@ -36,7 +36,7 @@ pipeline {
 
         stage('build artifact id') {
             steps {
-                artifactId = env.BRANCH_NAME
+                def artifactId = env.BRANCH_NAME
             }
         }
 
