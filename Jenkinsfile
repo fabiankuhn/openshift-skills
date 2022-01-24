@@ -37,6 +37,17 @@ pipeline {
             }
         }
 
+         stage('test') {
+             steps {
+                 sh "./gradlew --no-daemon test"
+             }
+             post {
+                 always {
+                     junit '**/test-results/test/*.xml'
+                 }
+             }
+         }
+
         stage('build docker image') {
             steps {
                 sh "oc apply -f openshift/image-stream-config.yaml"

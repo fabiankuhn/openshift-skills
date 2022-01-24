@@ -2,6 +2,8 @@ kind: "DeploymentConfig"
 apiVersion: "v1"
 metadata:
   name: "java-backend"
+  labels:
+    app: "java-backend"
 spec:
   template:
     metadata:

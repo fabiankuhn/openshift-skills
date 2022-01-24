@@ -5,8 +5,10 @@ metadata:
 spec:
   output:
     to:
-      kind: ImageStreamTag
-      name: 'java-backend:latest'
+      kind: DockerImage
+      name: 'ghcr.io/fabiankuhn/java-backend:latest'
+    pushSecret:
+      name: docker-hub-secret
   source:
     binary: {}
     type: Binary

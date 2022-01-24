@@ -1,0 +1,8 @@
+{
+    "auths": {
+        "https://ghcr.io": {
+            "auth": "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",
+            "email": "fabian.kuhn@lemonbyte.ch"
+        }
+    }
+}

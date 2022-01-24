@@ -42,8 +42,8 @@ Trouble Resolve:
 
 ## Run with Docker locally
 - See [Dockerfile](backend/Dockerfile)
-- `$ docker build -t fabiankuhn/openshift-testapp-backend .`
-- `$ docker run -p 8080:8080 -d --name openshift-testapp fabiankuhn/openshift-testapp-backend`
+- `$ docker build -t ghcr.io/fabiankuhn/java-backend .`
+- `$ docker run -p 8080:8080 -d --name java-backend ghcr.io/fabiankuhn/java-backend`
 
 Check if build works
 

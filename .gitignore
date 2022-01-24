@@ -40,3 +40,5 @@ out/
 /app/data
 *.mv.db
 *.trace.db
+
+dockercfg
