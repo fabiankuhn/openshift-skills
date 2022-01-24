@@ -16,10 +16,7 @@ pipeline {
                 sh "oc project"
 
                 sh "Branch " + env.BRANCH_NAME
-
-                sh 'git rev-parse HEAD > commit'
-                def commit = readFile('commit').trim()
-                sh "Commit: " + commit
+                sh "Commit: " + env.GIT_COMMIT
             }
         }
 
