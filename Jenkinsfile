@@ -46,11 +46,16 @@ pipeline {
             }
         }
 
-        stage('deploy') {
+        stage('update openshift') {
             steps {
                 sh "oc apply -f openshift/service-config.yaml"
                 sh "oc apply -f openshift/router-config.yaml"
                 sh "oc process -f openshift/deployment-config.tpl.yaml -p DOCKER_TAG=${env.artifact_id} | oc apply -f -"
+            }
+        }
+
+        stage('deploy') {
+            steps {
                 sh "oc rollout latest dc/java-backend"
                 sh "oc rollout status dc/java-backend"
             }
