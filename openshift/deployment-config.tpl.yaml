@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Template
+parameters:
+  - name: DOCKER_TAG
+    required: true
+
+objects:
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: java-backend
+      labels:
+        app: java-backend
+    spec:
+      template:
+        metadata:
+          labels:
+            name: "java-backend"
+        spec:
+          containers:
+            - name: "java-backend"
+              image: ghcr.io/fabiankuhn/java-backend:latest${DOCKER_TAG}
+              ports:
+                - containerPort: 8080
+                  protocol: "TCP"
+      replicas: 2
+      strategy:
+        type: "Rolling"
+      paused: false
+      revisionHistoryLimit: 2
+      minReadySeconds: 0
+
