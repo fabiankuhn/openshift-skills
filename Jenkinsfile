@@ -35,7 +35,9 @@ pipeline {
 //         }
 
         stage('build artifact id') {
-            artifactId = env.BRANCH_NAME
+            steps {
+                artifactId = env.BRANCH_NAME
+            }
         }
 
         stage('build docker image') {
