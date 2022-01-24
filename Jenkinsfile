@@ -32,6 +32,8 @@ pipeline {
                 script {
                     def artifactId = env.BRANCH_NAME
                 }
+                echo "Artifact Identifier: ${artifactId}"
+                currentBuild.description = "${artifactId}"
             }
         }
 
@@ -48,7 +50,6 @@ pipeline {
                 sh "oc apply -f openshift/router-config.yaml"
                 sh "oc process -f openshift/deployment-config.tpl.yaml -p DOCKER_TAG=${env.GIT_COMMIT} | oc apply -f -"
                 sh "oc rollout latest dc/java-backend"
-//                currentBuild.description = {artifactId}
             }
         }
     }
