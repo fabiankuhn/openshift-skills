@@ -1,5 +1,4 @@
 #!groovy
-def artifactId = env.GIT_COMMIT
 
 pipeline {
     tools {
@@ -11,13 +10,6 @@ pipeline {
     }
 
     stages {
-        stage('preamble') {
-            steps {
-                echo "Branch: " + env.BRANCH_NAME
-                echo "Commit: " + env.GIT_COMMIT
-            }
-        }
-
         stage('build') {
             steps {
                 sh "./gradlew clean assemble"
@@ -34,6 +26,14 @@ pipeline {
 //                 }
 //             }
 //         }
+
+        stage('build artifact id') {
+            steps {
+                script {
+                    def artifactId = env.BRANCH_NAME
+                }
+            }
+        }
 
         stage('build docker image') {
             steps {

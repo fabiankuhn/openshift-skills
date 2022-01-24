@@ -24,9 +24,9 @@ objects:
                 - containerPort: 8080
                   protocol: "TCP"
       replicas: 2
+      triggers: []
       strategy:
         type: "Rolling"
       paused: false
       revisionHistoryLimit: 2
       minReadySeconds: 0
-
