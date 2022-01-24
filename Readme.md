@@ -40,8 +40,9 @@ Trouble Resolve:
 - Connect to Github
 - See [Jenkins-Config-Handling-md](_docs/Jenkins-Config-Handling.md)
 
-## Setup Registry
-oc create secret docker-registry docker-hub-secret --docker-server=ghcr.io --docker-username=fabiankuhn --docker-password=<my-password> --docker-email=fabian.kuhn@lemonbyte.ch
+## Setup Registry and Secrets
+- `$ oc create secret docker-registry docker-hub-secret --docker-server=ghcr.io --docker-username=fabiankuhn --docker-password=<my-password> --docker-email=fabian.kuhn@lemonbyte.ch`
+- `$ oc secrets link default docker-hub-secret --for=pull`
 
 ## Run with Docker locally
 - See [Dockerfile](backend/Dockerfile)

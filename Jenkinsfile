@@ -15,8 +15,8 @@ pipeline {
                 echo "Using project:"
                 sh "oc project"
 
-                sh "Branch " + env.BRANCH_NAME
-                sh "Commit: " + env.GIT_COMMIT
+                echo "Branch: " + env.BRANCH_NAME
+                echo "Commit: " + env.GIT_COMMIT
             }
         }
 
