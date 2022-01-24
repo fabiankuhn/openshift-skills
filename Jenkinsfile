@@ -60,9 +60,7 @@ pipeline {
             steps {
                 sh "oc apply -f openshift/service-config.yaml"
                 sh "oc apply -f openshift/router-config.yaml"
-
                 sh "oc apply -f openshift/deployment-config.yaml"
-
                 sh "oc rollout latest dc/java-backend"
             }
         }
