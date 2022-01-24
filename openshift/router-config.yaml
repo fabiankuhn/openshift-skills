@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Route
 metadata:
-  name: java-backend2
+  name: java-backend
 spec:
   to:
     kind: Service

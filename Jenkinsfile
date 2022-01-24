@@ -18,8 +18,9 @@ pipeline {
     tools {
         jdk "JDK 17" // Tool defined in Jenkins -> Manage Jenkins -> Global Tool Config -> JDK (see docs)
     }
+
     agent {
-        label 'maven' // Starts automatically
+        label 'maven'
     }
 
     stages {
@@ -38,7 +39,7 @@ pipeline {
 
          stage('test') {
              steps {
-                 sh "./gradlew --no-daemon clean check"
+                 sh "./gradlew --no-daemon test"
              }
              post {
                  always {
@@ -50,7 +51,7 @@ pipeline {
         stage('build docker image') {
             steps {
                 sh "oc apply -f openshift/image-stream-config.yaml"
-                sh "oc apply -f openshift/service-config.yaml"
+                sh "oc apply -f openshift/build-config.yaml"
                 sh "oc start-build java-backend --from-dir=backend --follow --wait"
             }
         }
@@ -59,7 +60,10 @@ pipeline {
             steps {
                 sh "oc apply -f openshift/service-config.yaml"
                 sh "oc apply -f openshift/router-config.yaml"
+
                 sh "oc apply -f openshift/deployment-config.yaml"
+
+                sh "oc rollout latest dc/java-backend"
             }
         }
     }

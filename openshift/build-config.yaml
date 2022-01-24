@@ -1,9 +1,12 @@
+apiVersion: build.openshift.io/v1
 kind: BuildConfig
-apiVersion: v1
 metadata:
   name: java-backend
 spec:
-  runPolicy: Serial
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'java-backend:latest'
   source:
     binary: {}
     type: Binary
@@ -11,8 +14,6 @@ spec:
     dockerStrategy:
       from:
         kind: ImageStreamTag
-        name: 'openjdk:11-slim'
-  output:
-    to:
-      kind: ImageStreamTag
-      name: openshift-testapp-java:latest
+        name: 'openjdk:17-slim'
+    type: Docker
+  successfulBuildsHistoryLimit: 5

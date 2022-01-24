@@ -14,12 +14,11 @@ spec:
           ports:
             - containerPort: 8080
               protocol: "TCP"
-  replicas: 5
+  replicas: 2
   triggers:
-    - type: "ConfigChange"
     - type: "ImageChange"
       imageChangeParams:
-        automatic: true
+        automatic: false
         containerNames:
           - "java-backend"
         from:
