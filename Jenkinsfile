@@ -1,4 +1,5 @@
 #!groovy
+def artifactId = env.BRANCH_NAME
 
 pipeline {
     tools {
@@ -33,12 +34,6 @@ pipeline {
 //                 }
 //             }
 //         }
-
-        stage('build artifact id') {
-            steps {
-                def artifactId = env.BRANCH_NAME
-            }
-        }
 
         stage('build docker image') {
             steps {
