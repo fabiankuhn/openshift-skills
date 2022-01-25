@@ -16,13 +16,8 @@ objects:
           name: ghcr.io/fabiankuhn/java-backend:${DOCKER_TAG}
         pushSecret:
           name: docker-hub-secret
-      source:
-        binary: {}
-        type: Binary
       strategy:
         dockerStrategy:
-          from:
-            kind: ImageStreamTag
-            name: openjdk:17-slim
+          dockerfilePath: backend/Dockerfile
         type: Docker
       successfulBuildsHistoryLimit: 5

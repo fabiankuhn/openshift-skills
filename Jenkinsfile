@@ -42,7 +42,7 @@ pipeline {
 
             steps {
                 sh "oc process -f openshift/build-config.tpl.yaml -p DOCKER_TAG=${env.artifact_id} | oc apply -f -"
-                sh "oc start-build java-backend --from-dir=backend --follow --wait"
+                sh "oc start-build java-backend --follow --wait"
             }
         }
 
