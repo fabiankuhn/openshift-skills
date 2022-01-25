@@ -24,6 +24,6 @@ objects:
           from:
             kind: ImageStreamTag
             name: openjdk:17-slim
-          dockerfilePath: backend/Dockerfile
+          dockerfilePath: Dockerfile
         type: Docker
       successfulBuildsHistoryLimit: 5
