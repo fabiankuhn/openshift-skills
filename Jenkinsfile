@@ -1,10 +1,6 @@
 #!groovy
 
 pipeline {
-    tools {
-        jdk "jdk-17"
-    }
-
     agent {
         label 'maven'
     }
@@ -21,6 +17,9 @@ pipeline {
         }
 
         stage('build') {
+            tools {
+                jdk "jdk-17"
+            }
             steps {
                 sh "./gradlew clean assemble"
             }
