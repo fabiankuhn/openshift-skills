@@ -4,6 +4,9 @@ pipeline {
     agent {
         label 'maven'
     }
+    tools {
+        jdk "openjdk-17"
+    }
 
     stages {
         stage('artifact id') {
@@ -17,9 +20,6 @@ pipeline {
         }
 
         stage('build') {
-            tools {
-                jdk "openjdk-17"
-            }
             steps {
                 sh "./gradlew clean assemble"
             }
