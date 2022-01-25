@@ -2,7 +2,7 @@
 
 pipeline {
     tools {
-        jdk "JDK 17" // Tool defined in Jenkins -> Manage Jenkins -> Global Tool Config -> JDK (see docs)
+        jdk "jdk-17"
     }
 
     agent {
