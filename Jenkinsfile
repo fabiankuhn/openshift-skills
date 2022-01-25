@@ -1,11 +1,14 @@
 #!groovy
 
 pipeline {
+
+    // TODO webhook
+
     agent {
         label 'maven'
     }
     tools {
-        jdk "openjdk-17"
+        jdk "openjdk-11"
     }
 
     stages {
