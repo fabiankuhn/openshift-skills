@@ -7,9 +7,9 @@ pipeline {
     agent {
         label 'maven'
     }
-//    tools {
-//        jdk "openjdk-11"
-//    }
+    tools {
+        jdk "openjdk-11"
+    }
 
     stages {
         stage('artifact id') {
