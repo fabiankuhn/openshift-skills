@@ -2,7 +2,7 @@
 This documentation shows, how a simple java application can be deployed to openshift (minishift) via jenkins pipeline.
 
 More Info
-- Openshift Configs: [Openshift-Config.md](_docs/Openshift-Config.md)
+- Openshift Configs: [Openshift-Config](openshift)
 - Jenkins Handling: [Jenkins-Config-Handling-md](_docs/Jenkins-Config-Handling.md)
 
 ## Installation
@@ -16,165 +16,48 @@ More Info
 5. Run Minishift (with Virtualbox): 
    - First run `$ minishift start --vm-driver=virtualbox` 
    - Following runs: `$ minishift start`
-
-
+   
 Trouble Resolve:
 - minishift delete --clear-cache
 
-
 ## Create Github Repo
 - Create Readme
-- Create Jenkinsfile
-
-```groovy
-pipeline {
-  agent any
-
-  stages {
-    stage('test') {
-      tools {
-        jdk "JDK 17" // Tool defined in Jenkins -> Manage Jenkins -> Global Tool Config -> JDK (see docs)
-      }
-      agent {
-        label 'maven' // Starts automatically
-      }
-      steps {
-        sh "./gradlew --no-daemon clean check" // Execute Tests
-      }
-      post {
-        always {
-          junit '**/test-results/test/*.xml' // Post test results to jenkins blue
-        }
-      }
-    }
-    stage('build') {
-
-      tools {
-        jdk "JDK 17"
-      }
-      agent {
-        label 'maven'
-      }
-      steps {
-
-        sh "./gradlew clean assemble" // Generate jar
-
-        script {
-          openshift.withCluster() {
-
-            def buildConfig = openshift.selector("bc", "java-backend") // The java-backend build script will be automatically created in the last step
-            buildConfig.startBuild("--from-dir backend", "--wait")
-            def builds = buildConfig.related('builds')
-            builds.describe()
-          }
-        }
-      }
-    }
-  }
-}
-```
-
+- Create Jenkinsfileoc new-build --strategy docker --binary --docker-image openjdk:17-slim:openjdk:17-slim --name awesome-java-app
+- See [Jenkinsfile](Jenkinsfile)
 
 ## Install Jenkins
 - Open Webconsole: [https://192.168.99.101:8443/console/catalog](https://192.168.99.101:8443/console/catalog)
 - Choose service catalog
 - Search for Jenkins
-	- Persistent (if persistent volumes are present)
-	- Ephemeral (for testing)
-- Add ip to /etc/hosts (e.g. `192.168.99.101 jenkins-testapp.192.168.99.101.nip.io`)
+    - Persistent (if persistent volumes are present)
+    - Ephemeral (for testing)
+- Add ip to `/etc/hosts` of local machine (e.g. `192.168.99.101 jenkins-testapp.192.168.99.101.nip.io`)
 - Open Jenkins
 - Remove sample task
 - Choose `New Item`
 - Choose `Multibranch Pipeline`
 - Choose `Periodically run` with 1 minute interval
 - Connect to Github
+- See [Jenkins-Config-Handling-md](_docs/Jenkins-Config-Handling.md)
 
-(Screenshots)
-
-## Create Java App
-- Build Gradle
-```groovy
-
-plugins {
-    id 'org.springframework.boot' version '2.3.4.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-    id 'java'
-}
-
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    // Open API Definition
-	implementation("org.springdoc:springdoc-openapi-ui:1.4.8")
-
-    // Testing
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
-}
-
-test {
-    useJUnitPlatform()
-}
-```
-
-- Main method
-```java
-@SpringBootApplication
-public class HelloWorld {
-  public static void main(String[] args) {
-    SpringApplication.run(HelloWorld.class, args);
-  }
-}
-```
-
-- Controller
-````java
-@RestController
-public class Controller {
-
-    @GetMapping
-    public String root(){
-        return "Hello World";
-    }
-}
-````
-
+## Setup Registry and Secrets
+- `$ oc create secret docker-registry docker-hub-secret --docker-server=ghcr.io --docker-username=fabiankuhn --docker-password=<my-password> --docker-email=fabian.kuhn@lemonbyte.ch`
+- `$ oc secrets link default docker-hub-secret --for=pull`
 
 ## Run with Docker locally
-```dockerfile
-FROM openjdk:17-slim
-
-ARG JAR_FILE=build/libs/\*.jar
-
-COPY ${JAR_FILE} app.jar
-
-EXPOSE 8080
-
-ENTRYPOINT ["java","-jar","app.jar"]
-```
-
-- `$ docker build -t fabiankuhn/mini-java .`
-- `$ docker run -p 8080:8080 -d --name openshift-testapp fabiankuhn/mini-java`
+- See [Dockerfile](backend/Dockerfile)
+- `$ docker build -t ghcr.io/fabiankuhn/java-backend .`
+- `$ docker run -p 8080:8080 -d --name java-backend ghcr.io/fabiankuhn/java-backend`
 
 Check if build works
 
-## Create Openshift App
+## Create Openshift Example APp
 - `$ oc login` with credentials developer & developer
-- `$ oc new-build --strategy docker --binary --docker-image openjdk:17-slim --name java-backend`
+- `$ oc new-build --strategy docker --binary --docker-image openjdk:11-slim:openjdk:11-slim --name java-backend`
 - `$ oc start-build java-backend --from-dir . --follow`
-- `$ oc new-app myapp`
-- `$ oc expose svc/myap`
-- `$ oc get route myapp`
+- `$ oc new-app java-backend`
+- `$ oc expose svc/java-backend`
+- `$ oc get route java-backend`
 
 If deployment was successful, try out the pipeline build (which works identical). If necessary optimize the build and deploy configs.
 

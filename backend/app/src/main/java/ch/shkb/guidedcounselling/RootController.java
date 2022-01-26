@@ -10,7 +10,7 @@ public class RootController {
 
     @GetMapping
     public String getRootMessage(){
-        return "Guided Counselling Backend";
+        return "My awesome backend 2";
     }
 
 }

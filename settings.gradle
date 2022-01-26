@@ -1,4 +1,4 @@
-rootProject.name = 'openshift-testapp'
+rootProject.name = 'openshift-skills'
 
 include 'backend'
 
