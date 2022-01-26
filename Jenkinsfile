@@ -29,16 +29,16 @@ pipeline {
             }
         }
 
-//         stage('test') {
-//             steps {
-//                 sh "./gradlew --no-daemon test"
-//             }
-//             post {
-//                 always {
-//                     junit '**/test-results/test/*.xml'
-//                 }
-//             }
-//         }
+         stage('test') {
+             steps {
+                 sh "./gradlew --no-daemon test"
+             }
+             post {
+                 always {
+                     junit '**/test-results/test/*.xml'
+                 }
+             }
+         }
 
         stage('build docker image') {
             // TODO do not send whole backend folder but build folder with dockerfile
